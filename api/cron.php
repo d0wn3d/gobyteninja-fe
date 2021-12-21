@@ -1,25 +1,25 @@
 <?php
 
 /*
-    This file is part of Dash Ninja.
-    https://github.com/elbereth/dashninja-fe
+    This file is part of GoByte Ninja.
+    https://github.com/gobytecoin/gobyteninja-fe
 
-    Dash Ninja is free software: you can redistribute it and/or modify
+    GoByte Ninja is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Dash Ninja is distributed in the hope that it will be useful,
+    GoByte Ninja is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Dash Ninja.  If not, see <http://www.gnu.org/licenses/>.
+    along with GoByte Ninja.  If not, see <http://www.gnu.org/licenses/>.
 
  */
 
-define("DASHNINJA_CRONVERSION","3");
+define("GOBYTENINJA_CRONVERSION","3");
 
 // Load configuration and connect to DB
 require_once('libs/db.inc.php');
@@ -98,7 +98,7 @@ function generate_masternodeslistfull_json_files($mysqli, $testnet = 0) {
 
     xecho("Retrieving current protocol version: ");
 
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_maxprotocol_%d",$testnet);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_maxprotocol_%d",$testnet);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if ($cachevalid) {
         $protocol = unserialize(file_get_contents($cachefnam));
@@ -244,7 +244,7 @@ function generate_masternodeslistfull_json_files($mysqli, $testnet = 0) {
                 'fromcache' => true),
             'api' => array('version' => 4,
                 'compat' => 3,
-                'bev' => 'mnfl='.DASHNINJA_BEV.'.'.DASHNINJA_CRONVERSION)
+                'bev' => 'mnfl='.GOBYTENINJA_BEV.'.'.GOBYTENINJA_CRONVERSION)
         ));
 
     save_json("masternodeslistfull",$data,DMN_CRON_MNFL_SEMAPHORE,$testnet);
@@ -320,7 +320,7 @@ function generate_protxfull_json_files($mysqli, $testnet = 0) {
                 'fromcache' => true),
             'api' => array('version' => 1,
                 'compat' => 1,
-                'bev' => 'protx='.DASHNINJA_BEV.'.'.DASHNINJA_CRONVERSION)
+                'bev' => 'protx='.GOBYTENINJA_BEV.'.'.GOBYTENINJA_CRONVERSION)
         ));
 
     save_json("protxfull",$data,DMN_CRON_PROTX_SEMAPHORE,$testnet);
@@ -343,7 +343,7 @@ function generate_blocks24h_json_files($mysqli, $testnet = 0) {
 
     xecho("Retrieving protocol descriptions: ");
 
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_protocolesc_%d",$testnet);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_protocolesc_%d",$testnet);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+900)>=time()));
     if ($cachevalid) {
         echo "From cache... ";
@@ -641,7 +641,7 @@ function generate_blocks24h_json_files($mysqli, $testnet = 0) {
             'api' => array(
                 'version' => 4,
                 'compat' => 4,
-                'bev' => 'bk24h='.DASHNINJA_BEV.".".DASHNINJA_CRONVERSION
+                'bev' => 'bk24h='.GOBYTENINJA_BEV.".".GOBYTENINJA_CRONVERSION
             )
         ));
         save_json("blocks24h",$data,DMN_CRON_BK24_SEMAPHORE,$testnet);
@@ -684,7 +684,7 @@ function generate_nodesstatus_json_files($mysqli, $testnet = 0) {
                 'fromcache' => true),
             'api' => array('version' => 3,
                 'compat' => 3,
-                'bev' => 'mnst='.DASHNINJA_BEV.'.'.DASHNINJA_CRONVERSION)
+                'bev' => 'mnst='.GOBYTENINJA_BEV.'.'.GOBYTENINJA_CRONVERSION)
         ));
     save_json("nodesstatus",$data,DMN_CRON_MNST_SEMAPHORE,$testnet);
 
@@ -782,7 +782,7 @@ function generate_blocksconsensus_json_files($mysqli, $testnet = 0) {
                 'fromcache' => true),
             'api' => array('version' => 3,
                 'compat' => 3,
-                'bev' => 'bkcs='.DASHNINJA_BEV.'.'.DASHNINJA_CRONVERSION)
+                'bev' => 'bkcs='.GOBYTENINJA_BEV.'.'.GOBYTENINJA_CRONVERSION)
         ));
     save_json("blocksconsensus",$data,DMN_CRON_BKCS_SEMAPHORE,$testnet);
 
@@ -807,7 +807,7 @@ function generate_governancevotelimit_json_files($mysqli, $testnet = 0) {
     echo "OK (".$currentblock["BlockId"].")\n";
 
     if ($testnet == 0) {
-        $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 16616) + 16616;
+        $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 17280) + 17280;
     } else {
         $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 50) + 50;
     }
@@ -835,7 +835,7 @@ function generate_governancevotelimit_json_files($mysqli, $testnet = 0) {
     xecho("--> Computing vote limit: ");
     // Vote limit is 1662 blocks before next superblock
     $nextsuperblockid = $nextsuperblock - 1662;
-    $nextsuperblocktime = round($currentblock["BlockTime"]+((($nextsuperblock - 1662 - $currentblock["BlockId"])/553.85)*86400));
+    $nextsuperblocktime = round($currentblock["BlockTime"]+((($nextsuperblock - 1662 - $currentblock["BlockId"])/576)*86400));
     if ($nextsuperblockid <= $currentblock["BlockId"]) {
         $nextsuperblockid = 0;
         $nextsuperblocktime = 0;
@@ -847,7 +847,7 @@ function generate_governancevotelimit_json_files($mysqli, $testnet = 0) {
 
     $nextsuperblock = array(
         "BlockId" => $nextsuperblock,
-        "BlockTime" => round($currentblock["BlockTime"]+((($nextsuperblock - $currentblock["BlockId"])/553.85)*86400))
+        "BlockTime" => round($currentblock["BlockTime"]+((($nextsuperblock - $currentblock["BlockId"])/576)*86400))
     );
     echo "OK\n";
 
@@ -864,7 +864,7 @@ function generate_governancevotelimit_json_files($mysqli, $testnet = 0) {
         'api' => array(
             'version' => 1,
             'compat' => 1,
-            'bev' => 'gpvl=' . DASHNINJA_BEV . "." . DASHNINJA_CRONVERSION
+            'bev' => 'gpvl=' . GOBYTENINJA_BEV . "." . GOBYTENINJA_CRONVERSION
         )
     ));
 
@@ -905,20 +905,20 @@ function generate_governanceproposals_json_files($mysqli, $testnet = 0) {
     }
 
     // Calculate next superblock height
-    $nSubsidy = 5;
+    $nSubsidy = 15;
     if ($testnet == 0) {
-        $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 16616) + 16616;
-        for ($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy / 14;
+        $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 17280) + 17280;
+        for ($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy / 12;
         $estimatedbudgetamount = (($nSubsidy / 100) * 10) * (60 * 24 * 30) / 2.6;
     } else {
         $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 50) + 50;
-        for ($i = 46200; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy / 14;
+        for ($i = 46200; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy / 12;
         $estimatedbudgetamount = (($nSubsidy / 100) * 10) * 50;
     }
 
     // Calculate next superblock timestamp
-    $nextsuperblocktimestamp = round($currentblock['BlockTime']+(($nextsuperblock-$currentblock['BlockId'])/553.85)*86400);
-    echo "OK (".$currentblock["BlockId"]." / Estimated budget amount: ".$estimatedbudgetamount." DASH)\n";
+    $nextsuperblocktimestamp = round($currentblock['BlockTime']+(($nextsuperblock-$currentblock['BlockId'])/576)*86400);
+    echo "OK (".$currentblock["BlockId"]." / Estimated budget amount: ".$estimatedbudgetamount." GBX)\n";
 
     // Get governance proposals
     $sql = sprintf("SELECT * FROM cmd_gobject_proposals WHERE GovernanceObjectTestnet = %d",$testnet);
@@ -1023,7 +1023,7 @@ function generate_governanceproposals_json_files($mysqli, $testnet = 0) {
         'api' => array(
             'version' => 2,
             'compat' => 1,
-            'bev' => 'gp='.DASHNINJA_BEV.".".DASHNINJA_CRONVERSION
+            'bev' => 'gp='.GOBYTENINJA_BEV.".".GOBYTENINJA_CRONVERSION
         )
         ));
 
@@ -1123,7 +1123,7 @@ function generate_governancetriggers_json_files($mysqli, $testnet = 0) {
         'api' => array(
             'version' => 1,
             'compat' => 1,
-            'bev' => 'gt='.DASHNINJA_BEV.".".DASHNINJA_CRONVERSION
+            'bev' => 'gt='.GOBYTENINJA_BEV.".".GOBYTENINJA_CRONVERSION
         )
         ));
 
@@ -1187,7 +1187,7 @@ function generate_blockssuperblocks_json_files($mysqli, $testnet = 0) {
             'api' => array(
                 'version' => 1,
                 'compat' => 1,
-                'bev' => 'sb='.DASHNINJA_BEV.".".DASHNINJA_CRONVERSION
+                'bev' => 'sb='.GOBYTENINJA_BEV.".".GOBYTENINJA_CRONVERSION
             )
         ));
 
@@ -1195,7 +1195,7 @@ function generate_blockssuperblocks_json_files($mysqli, $testnet = 0) {
 
 }
 
-xecho('DASH Ninja Front-End JSON Generator cron v'.DASHNINJA_BEV.'.'.DASHNINJA_CRONVERSION."\n");
+xecho('GOBYTE Ninja Front-End JSON Generator cron v'.GOBYTENINJA_BEV.'.'.GOBYTENINJA_CRONVERSION."\n");
 
 if ($argc != 3) {
     xecho("Usage: ".$argv[0]." main|testnet <command>\n");

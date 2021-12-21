@@ -1,26 +1,27 @@
 /*
- This file is part of Dash Ninja.
- https://github.com/elbereth/dashninja-fe
+ This file is part of GoByte Ninja.
+ https://github.com/gobytecoin/gobyteninja-fe
 
- Dash Ninja is free software: you can redistribute it and/or modify
+
+ GoByte Ninja is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- Dash Ninja is distributed in the hope that it will be useful,
+ GoByte Ninja is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Dash Ninja.  If not, see <http://www.gnu.org/licenses/>.
+ along with GoByte Ninja.  If not, see <http://www.gnu.org/licenses/>.
 
  */
 
-// Dash Ninja Front-End (dashninja-fe) - Governance
-// By elberethzone / https://www.dash.org/forum/members/elbereth.175/
+// GoByte Ninja Front-End (gobyteninja-fe) - Governance
+// forked from dashninja-fe By elberethzone / https://dashtalk.org/members/elbereth.175/
 
-var dashninjaversion = '1.6.3';
+var gobyteninjaversion = '1.6.3';
 var tableGovernance = null;
 var tableBudgetsProjection = null;
 var tableSuperBlocks = null;
@@ -36,45 +37,45 @@ var arrayMonthlyPayments = [];
 
 $.fn.dataTable.ext.errMode = 'throw';
 
-var dashninjatestnet = 0;
+var gobyteninjatestnet = 0;
 
-if (typeof dashninjatestnethost !== 'undefined') {
-    if (window.location.hostname == dashninjatestnethost) {
-        dashninjatestnet = 1;
+if (typeof gobyteninjatestnethost !== 'undefined') {
+    if (window.location.hostname == gobyteninjatestnethost) {
+        gobyteninjatestnet = 1;
     }
 }
-if (typeof dashninjatestnettor !== 'undefined') {
-    if (window.location.hostname == dashninjatestnettor) {
-        dashninjatestnet = 1;
+if (typeof gobyteninjatestnettor !== 'undefined') {
+    if (window.location.hostname == gobyteninjatestnettor) {
+        gobyteninjatestnet = 1;
     }
 }
-if (typeof dashninjatestneti2p !== 'undefined') {
-    if (window.location.hostname == dashninjatestneti2p) {
-        dashninjatestnet = 1;
+if (typeof gobyteninjatestneti2p !== 'undefined') {
+    if (window.location.hostname == gobyteninjatestneti2p) {
+        gobyteninjatestnet = 1;
     }
 }
 
-if (typeof dashninjacoin === 'undefined') {
-    var dashninjacoin = ['',''];
+if (typeof gobyteninjacoin === 'undefined') {
+    var gobyteninjacoin = ['',''];
 }
-if (typeof dashninjaaddressexplorer === 'undefined') {
-    var dashninjaaddressexplorer = [[],[]];
+if (typeof gobyteninjaaddressexplorer === 'undefined') {
+    var gobyteninjaaddressexplorer = [[],[]];
 }
-if (typeof dashninjaaddressexplorer[0] === 'undefined') {
-    dashninjaaddressexplorer[0] = [];
+if (typeof gobyteninjaaddressexplorer[0] === 'undefined') {
+    gobyteninjaaddressexplorer[0] = [];
 }
-if (typeof dashninjaaddressexplorer[1] === 'undefined') {
-    dashninjaaddressexplorer[1] = [];
+if (typeof gobyteninjaaddressexplorer[1] === 'undefined') {
+    gobyteninjaaddressexplorer[1] = [];
 }
 
-if (typeof dashninjatxexplorer === 'undefined') {
-    var dashninjatxexplorer = [[],[]];
+if (typeof gobyteninjatxexplorer === 'undefined') {
+    var gobyteninjatxexplorer = [[],[]];
 }
-if (typeof dashninjatxexplorer[0] === 'undefined') {
-    dashninjatxexplorer[0] = [];
+if (typeof gobyteninjatxexplorer[0] === 'undefined') {
+    gobyteninjatxexplorer[0] = [];
 }
-if (typeof dashninjatxexplorer[1] === 'undefined') {
-    dashninjatxexplorer[1] = [];
+if (typeof gobyteninjatxexplorer[1] === 'undefined') {
+    gobyteninjatxexplorer[1] = [];
 }
 
 function tableGovernanceRefresh(){
@@ -97,36 +98,36 @@ function tableSuperBlocksExpectedRefresh(){
 
 $(document).ready(function(){
 
-    $('#dashninjajsversion').text( dashninjaversion ).addClass("label-info").removeClass("label-danger");
+    $('#gobyteninjajsversion').text( gobyteninjaversion ).addClass("label-info").removeClass("label-danger");
 
-    if (dashninjatestnet == 1) {
+    if (gobyteninjatestnet == 1) {
         $('#testnetalert').show();
-        $('a[name=menuitemexplorer]').attr("href", "https://" + dashninjatestnetexplorer);
-        if (typeof dashninjatestnettor !== 'undefined') {
-            $('a[name=dashninjatorurl]').attr("href", "http://"+dashninjatestnettor+"/governance.html");
-            $('span[name=dashninjatordisplay]').show();
+        $('a[name=menuitemexplorer]').attr("href", "https://" + gobyteninjatestnetexplorer);
+        if (typeof gobyteninjatestnettor !== 'undefined') {
+            $('a[name=gobyteninjatorurl]').attr("href", "http://"+gobyteninjatestnettor+"/governance.html");
+            $('span[name=gobyteninjatordisplay]').show();
         }
 
-        if (typeof dashninjatestneti2p !== 'undefined') {
-            $('a[name=dashninjai2purl]').attr("href", "http://" + dashninjatestneti2p + "/governance.html");
-            $('span[name=dashninjai2pdisplay]').show();
+        if (typeof gobyteninjatestneti2p !== 'undefined') {
+            $('a[name=gobyteninjai2purl]').attr("href", "http://" + gobyteninjatestneti2p + "/governance.html");
+            $('span[name=gobyteninjai2pdisplay]').show();
         }
     }
     else {
-        if (typeof dashninjator !== 'undefined') {
-            $('a[name=dashninjatorurl]').attr("href", "http://"+dashninjator+"/governance.html");
-            $('span[name=dashninjatordisplay]').show();
+        if (typeof gobyteninjator !== 'undefined') {
+            $('a[name=gobyteninjatorurl]').attr("href", "http://"+gobyteninjator+"/governance.html");
+            $('span[name=gobyteninjatordisplay]').show();
         }
 
-        if (typeof dashninjai2p !== 'undefined') {
-            $('a[name=dashninjai2purl]').attr("href", "http://" + dashninjai2p + "/governance.html");
-            $('span[name=dashninjai2pdisplay]').show();
+        if (typeof gobyteninjai2p !== 'undefined') {
+            $('a[name=gobyteninjai2purl]').attr("href", "http://" + gobyteninjai2p + "/governance.html");
+            $('span[name=gobyteninjai2pdisplay]').show();
         }
     }
 
     $('#proposalsdetailtable').on('xhr.dt', function ( e, settings, json ) {
 
-        var nextsuperblockdatetimestamp = json.data.stats.latestblock.BlockTime+(((json.data.stats.nextsuperblock.blockheight-json.data.stats.latestblock.BlockId)/553.85)*86400);
+        var nextsuperblockdatetimestamp = json.data.stats.latestblock.BlockTime+(((json.data.stats.nextsuperblock.blockheight-json.data.stats.latestblock.BlockId)/576)*86400);
 
          // Calculate the established project total amounts
          var totalamount = 0.0;
@@ -139,14 +140,14 @@ $(document).ready(function(){
         // Show global stats
         $('#globalvalidbudget').text(json.data.stats.valid);
         $('#globalestablishedbudget').text(json.data.stats.funded);
-        $('#globalestablishedbudgetamount').text(addCommas(Math.round(totalamount*100)/100)+' '+dashninjacoin[dashninjatestnet]);
+        $('#globalestablishedbudgetamount').text(addCommas(Math.round(totalamount*100)/100)+' '+gobyteninjacoin[gobyteninjatestnet]);
         var cls = "panel-red";
         if ((json.data.stats.nextsuperblock.blockheight-1662)<=json.data.stats.latestblock.BlockId) {
             $('#globalnextvotelimitdate').text( "Current month vote is over!" );
             $('#globalnextvotelimitremaining').text("Too late...");
         }
         else {
-            var nextvotelimitdatetimestamp = json.data.stats.latestblock.BlockTime+(((json.data.stats.nextsuperblock.blockheight-1662-json.data.stats.latestblock.BlockId)/553.85)*86400);
+            var nextvotelimitdatetimestamp = json.data.stats.latestblock.BlockTime+(((json.data.stats.nextsuperblock.blockheight-1662-json.data.stats.latestblock.BlockId)/576)*86400);
             var datevotelimit = new Date(nextvotelimitdatetimestamp*1000);
             $('#globalnextvotelimitdate').text(datevotelimit.toLocaleString());
             $('#globalnextvotelimitremaining').text(deltaTimeStampHRlong(nextvotelimitdatetimestamp,currenttimestamp()));
@@ -164,8 +165,8 @@ $(document).ready(function(){
         $('#globalnextsuperblockid').text(json.data.stats.nextsuperblock.blockheight);
         var unallocper = Math.round((json.data.stats.nextsuperblock.estimatedbudgetamount-totalamount)/json.data.stats.nextsuperblock.estimatedbudgetamount*100);
         var allocper = 100-unallocper;
-        $('#globalnextsuperblockamount').text(addCommas(Math.round(json.data.stats.nextsuperblock.estimatedbudgetamount*100)/100)+' '+dashninjacoin[dashninjatestnet]);
-        $('#globalnextsuperblockunallocated').text(addCommas(Math.round((json.data.stats.nextsuperblock.estimatedbudgetamount-totalamount)*100)/100)+' '+dashninjacoin[dashninjatestnet]);
+        $('#globalnextsuperblockamount').text(addCommas(Math.round(json.data.stats.nextsuperblock.estimatedbudgetamount*100)/100)+' '+gobyteninjacoin[gobyteninjatestnet]);
+        $('#globalnextsuperblockunallocated').text(addCommas(Math.round((json.data.stats.nextsuperblock.estimatedbudgetamount-totalamount)*100)/100)+' '+gobyteninjacoin[gobyteninjatestnet]);
         $('#budgetallocatedper').css({'width':allocper+'%'}).text("Allocated ("+allocper+"%)");
         $('#budgetleftper').css({'width':unallocper+'%'}).text("Left ("+unallocper+"%)");
 
@@ -182,7 +183,7 @@ $(document).ready(function(){
         else {
             tableSuperBlocksExpected = $('#superblocksexpectedtable').dataTable({
                 ajax: {
-                    url: "/data/governancetriggers-" + dashninjatestnet + ".json",
+                    url: "/data/governancetriggers-" + gobyteninjatestnet + ".json",
                     dataSrc: 'data.governancetriggers',
                     cache: true
                 },
@@ -212,7 +213,7 @@ $(document).ready(function(){
                         if (type == "sort") {
                             return data.PaymentProposalName;
                         } else {
-                            return '<a href="' + dashninjagovernanceproposaldetail[dashninjatestnet].replace('%%b%%', encodeURIComponent(data.PaymentProposalHash)) + '">' + data.PaymentProposalName + '</a>';
+                            return '<a href="' + gobyteninjagovernanceproposaldetail[gobyteninjatestnet].replace('%%b%%', encodeURIComponent(data.PaymentProposalHash)) + '">' + data.PaymentProposalName + '</a>';
                         }
                     }
                     },
@@ -221,7 +222,7 @@ $(document).ready(function(){
                         if (type == "sort") {
                             return data.PaymentAmount;
                         } else {
-                            return addCommas(data.PaymentAmount.toFixed(3)) + " " + dashninjacoin[dashninjatestnet];
+                            return addCommas(data.PaymentAmount.toFixed(3)) + " " + gobyteninjacoin[gobyteninjatestnet];
                         }
                     }
                     }
@@ -239,7 +240,7 @@ $(document).ready(function(){
         $('#proposalsdetailtableLRHR').text(deltaTimeStampHRlong(json.data.cache.time, currenttimestamp()));
     } );
     tableGovernance = $('#proposalsdetailtable').dataTable( {
-        ajax: { url: "/data/governanceproposals-"+dashninjatestnet+".json",
+        ajax: { url: "/data/governanceproposals-"+gobyteninjatestnet+".json",
             dataSrc: 'data.governanceproposals',
             cache: true },
         paging: true,
@@ -261,7 +262,7 @@ $(document).ready(function(){
                     if (data.Name == "") {
                         outtxt = data.Hash;
                     }
-                    outtxt = '<a href="'+dashninjagovernanceproposaldetail[dashninjatestnet].replace('%%b%%',data.Hash)+'">'+outtxt+'</a>';
+                    outtxt = '<a href="'+gobyteninjagovernanceproposaldetail[gobyteninjatestnet].replace('%%b%%',data.Hash)+'">'+outtxt+'</a>';
 //                    outtxt = '<a href="'+data.URL+'">'+outtxt+'</a>';
                 }
                 return outtxt;
@@ -279,7 +280,7 @@ $(document).ready(function(){
                     return data.PaymentAmount;
                 }
                 else {
-                    return addCommas(data.PaymentAmount.toFixed(2))+'&nbsp;'+dashninjacoin[dashninjatestnet];
+                    return addCommas(data.PaymentAmount.toFixed(2))+'&nbsp;'+gobyteninjacoin[gobyteninjatestnet];
                 }
 
             } },
@@ -439,7 +440,7 @@ $(document).ready(function(){
                 columns: [
                     {title: "Month"},
                     { data: null, render: function ( data, type, row ) {
-                        var outtxt = addCommas(data[1].toFixed(3))+" "+dashninjacoin[dashninjatestnet];
+                        var outtxt = addCommas(data[1].toFixed(3))+" "+gobyteninjacoin[gobyteninjatestnet];
                         return outtxt;
                     } }
                 ]
@@ -459,7 +460,7 @@ $(document).ready(function(){
             },
             yAxis: {
                 title: {
-                    text: 'Amount (DASH)'
+                    text: 'Amount (GBX)'
                 },
                 plotLines: [{
                     value: 0,
@@ -468,7 +469,7 @@ $(document).ready(function(){
                 }]
             },
             tooltip: {
-                valueSuffix: 'DASH'
+                valueSuffix: 'GBX'
             },
             legend: {
                 layout: 'vertical',
@@ -493,7 +494,7 @@ $(document).ready(function(){
 
     } );
     tableSuperBlocks = $('#superblockstable').dataTable( {
-        ajax: { url: "/data/blockssuperblocks-"+dashninjatestnet+".json",
+        ajax: { url: "/data/blockssuperblocks-"+gobyteninjatestnet+".json",
             dataSrc: 'data.superblocks',
             cache: true },
         paging: true,
@@ -514,8 +515,8 @@ $(document).ready(function(){
             { data: null, render: function ( data, type, row ) {
                 var outtxt = data.BlockId;
                 if (type != 'sort') {
-                    if (dashninjablockexplorer[dashninjatestnet].length > 0) {
-                        outtxt = '<a href="'+dashninjablockexplorer[dashninjatestnet][0][0].replace('%%b%%',data.BlockHash)+'">'+data.BlockId+'</a>';
+                    if (gobyteninjablockexplorer[gobyteninjatestnet].length > 0) {
+                        outtxt = '<a href="'+gobyteninjablockexplorer[gobyteninjatestnet][0][0].replace('%%b%%',data.BlockHash)+'">'+data.BlockId+'</a>';
                     }
                 }
                 return outtxt;
@@ -532,10 +533,10 @@ $(document).ready(function(){
                     return data.SuperBlockProposalName;
                 } else {
                     if (data.SuperBlockVersion == 1) {
-                        return '<a href="' + dashninjabudgetdetail[dashninjatestnet].replace('%%b%%', encodeURIComponent(data.SuperBlockProposalName)) + '">' + data.SuperBlockProposalName + '</a>';
+                        return '<a href="' + gobyteninjabudgetdetail[gobyteninjatestnet].replace('%%b%%', encodeURIComponent(data.SuperBlockProposalName)) + '">' + data.SuperBlockProposalName + '</a>';
                     }
                     else {
-                        return '<a href="' + dashninjagovernanceproposaldetail[dashninjatestnet].replace('%%b%%', encodeURIComponent(data.SuperBlockProposalHash)) + '">' + data.SuperBlockProposalName + '</a>';
+                        return '<a href="' + gobyteninjagovernanceproposaldetail[gobyteninjatestnet].replace('%%b%%', encodeURIComponent(data.SuperBlockProposalHash)) + '">' + data.SuperBlockProposalName + '</a>';
                     }
                 }
               }
@@ -544,7 +545,7 @@ $(document).ready(function(){
                 if (type == "sort") {
                     return data.SuperBlockPaymentAmount;
                 } else {
-                    return addCommas(data.SuperBlockPaymentAmount.toFixed(3))+" "+dashninjacoin[dashninjatestnet];
+                    return addCommas(data.SuperBlockPaymentAmount.toFixed(3))+" "+gobyteninjacoin[gobyteninjatestnet];
                 }
               }
             },
@@ -554,12 +555,12 @@ $(document).ready(function(){
                 } else {
                     var outtxt = "";
                     var ix = 0;
-                    for ( var i=0, ien=dashninjaaddressexplorer[dashninjatestnet].length ; i<ien ; i++ ) {
+                    for ( var i=0, ien=gobyteninjaaddressexplorer[gobyteninjatestnet].length ; i<ien ; i++ ) {
                         if (ix == 0) {
-                            outtxt += '<a href="'+dashninjaaddressexplorer[dashninjatestnet][0][0].replace('%%a%%',data.SuperBlockPaymentAddress)+'">'+data.SuperBlockPaymentAddress+'</a>';
+                            outtxt += '<a href="'+gobyteninjaaddressexplorer[gobyteninjatestnet][0][0].replace('%%a%%',data.SuperBlockPaymentAddress)+'">'+data.SuperBlockPaymentAddress+'</a>';
                         }
                         else {
-                            outtxt += '<a href="'+dashninjaaddressexplorer[dashninjatestnet][i][0].replace('%%a%%',data.SuperBlockPaymentAddress)+'">['+ix+']</a>';
+                            outtxt += '<a href="'+gobyteninjaaddressexplorer[gobyteninjatestnet][i][0].replace('%%a%%',data.SuperBlockPaymentAddress)+'">['+ix+']</a>';
                         }
                         ix++;
                     }

@@ -1,21 +1,22 @@
 <?php
 
 /*
-    This file is part of Dash Ninja.
-    https://github.com/elbereth/dashninja-fe
+    This file is part of GoByte Ninja.
+    https://github.com/gobytecoin/gobyteninja-fe
 
-    Dash Ninja is free software: you can redistribute it and/or modify
+
+    GoByte Ninja is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Dash Ninja is distributed in the hope that it will be useful,
+    GoByte Ninja is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Dash Ninja.  If not, see <http://www.gnu.org/licenses/>.
+    along with GoByte Ninja.  If not, see <http://www.gnu.org/licenses/>.
 
  */
 
@@ -52,7 +53,7 @@ $app->get('/api/version', function() use (&$mysqli) {
   //Change the HTTP status
   $response->setStatusCode(200, "OK");
   $response->setJsonContent(array('status' => 'OK', 'data' => array("version" => array(
-      "api" => DASHNINJA_BEV,
+      "api" => GOBYTENINJA_BEV,
       "phalcon" => Phalcon\Version::get(),
       "php" => phpversion(),
       "sql" => $mysqli->server_info
@@ -153,8 +154,8 @@ $app->get('/api/blocks', function() use ($app,&$mysqli) {
     }
     else {
       foreach ($mnpubkeys as $mnpubkey) {
-        if ( ( ($testnet == 1) && ! ( (substr($mnpubkey,0,1) == 'x') || (substr($mnpubkey,0,1) == 'y') ) )
-          || ( ($testnet == 0) && ! ( (substr($mnpubkey,0,1) == 'X') || (substr($mnpubkey,0,1) == '7') ) )
+        if ( ( ($testnet == 1) && ! ( (substr($mnpubkey,0,1) == 'n') || (substr($mnpubkey,0,1) == '9') ) )
+          || ( ($testnet == 0) && ! ( (substr($mnpubkey,0,1) == 'G') || (substr($mnpubkey,0,1) == '5') ) )
           || ( strlen($mnpubkey) != 34 ) ) {
           $errmsg[] = "Parameter pubkeys: Entry $mnpubkey: Incorrect pubkey format.";
         }
@@ -198,7 +199,7 @@ $app->get('/api/blocks', function() use ($app,&$mysqli) {
   }
   else {
     $cacheserial = sha1(serialize($mnpubkeys).serialize($budgetids));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_blocks_%d_%d_%s_%d_%d_%d_%s",$testnet,$cachenodetail,$cacheinterval,count($mnpubkeys),$onlysuperblocks,count($budgetids),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_blocks_%d_%d_%s_%d_%d_%d_%s",$testnet,$cachenodetail,$cacheinterval,count($mnpubkeys),$onlysuperblocks,count($budgetids),$cacheserial);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+$cachetime)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -316,14 +317,14 @@ $app->get('/api/blocks', function() use ($app,&$mysqli) {
               $curmnpaymentratio = $blocks[$blockid]['BlockMNValueRatioExpected'];
             }
         }
-  
+
         $blocksnew = array();
         foreach($blocks as $block) {
           $blocksnew[] = $block;
         }
         $blocks = $blocksnew;
         unset($blocksnew);
-  
+
         $totalmninfo = 0;
         $uniquemnips = 0;
         $mninfo = dmn_masternodes_count($mysqli,$testnet, $totalmninfo, $uniquemnips);
@@ -495,7 +496,7 @@ $app->get('/api/blocks', function() use ($app,&$mysqli) {
             'api' => array(
                 'version' => $apiversion,
                 'compat' => $apiversioncompat,
-                'bev' => 'bk='.DASHNINJA_BEV.".".$apiversion
+                'bev' => 'bk='.GOBYTENINJA_BEV.".".$apiversion
             )
                                                                          );
         //Change the HTTP status
@@ -694,7 +695,7 @@ $app->get('/api/blocks/superblocks', function() use ($app,&$mysqli) {
     }
     else {
         $cacheserial = sha1(serialize($proposalshash));
-        $cachefnam = CACHEFOLDER.sprintf("dashninja_blocks_superblockspayments_%d_%d_%s",$testnet,count($proposalshash),$cacheserial);
+        $cachefnam = CACHEFOLDER.sprintf("gobyteninja_blocks_superblockspayments_%d_%d_%s",$testnet,count($proposalshash),$cacheserial);
         $cachefnamupdate = $cachefnam.".update";
         $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+$cachetime)>=time()) || file_exists($cachefnamupdate)));
         if (DMN_USE_CACHE && $cachevalid) {
@@ -763,7 +764,7 @@ $app->get('/api/blocks/superblocks', function() use ($app,&$mysqli) {
                     'api' => array(
                         'version' => $apiversion,
                         'compat' => $apiversioncompat,
-                        'bev' => 'sb='.DASHNINJA_BEV.".".$apiversion
+                        'bev' => 'sb='.GOBYTENINJA_BEV.".".$apiversion
                     )
                 );
                 //Change the HTTP status
@@ -868,7 +869,7 @@ $app->get('/api/budgets', function() use ($app,&$mysqli) {
   }
   else {
     $cacheserial = sha1(serialize($budgetids).serialize($budgethashes));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_budgets_%d_%d_%d_%d_%s",$testnet,$onlyvalid,count($budgetids),count($budgethashes),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_budgets_%d_%d_%d_%d_%s",$testnet,$onlyvalid,count($budgetids),count($budgethashes),$cacheserial);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+120)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -965,14 +966,14 @@ $app->get('/api/budgets', function() use ($app,&$mysqli) {
           return $response;
         }
 
-        $nSubsidy = 5;
+        $nSubsidy = 15;
         if ($testnet == 0){
-          $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 16616) + 16616;
-          for($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/14;
+          $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 17280) + 17280;
+          for($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/12;
           $estimatedbudgetamount = (($nSubsidy/100)*10)*576*30;
         } else {
           $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 50) + 50 ;
-          for($i = 46200; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/14;
+          for($i = 46200; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/12;
           $estimatedbudgetamount = (($nSubsidy/100)*10)*50;
         }
 
@@ -994,7 +995,7 @@ $app->get('/api/budgets', function() use ($app,&$mysqli) {
             'api' => array(
                 'version' => $apiversion,
                 'compat' => $apiversioncompat,
-                'bev' => 'bu='.DASHNINJA_BEV.".".$apiversion
+                'bev' => 'bu='.GOBYTENINJA_BEV.".".$apiversion
             )
                      );
 
@@ -1051,7 +1052,7 @@ $app->get('/api/budgetsexpected', function() use ($app,&$mysqli) {
     $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errmsg));
   }
   else {
-    $cachefnam = CACHEFOLDER . sprintf("dashninja_budgets_final_%d", $testnet);
+    $cachefnam = CACHEFOLDER . sprintf("gobyteninja_budgets_final_%d", $testnet);
     $cachefnamupdate = $cachefnam . ".update";
     $cachetime = filemtime($cachefnam);
     $cachevalid = (is_readable($cachefnam) && ((($cachetime + 120) >= time()) || file_exists($cachefnamupdate)));
@@ -1113,7 +1114,7 @@ $app->get('/api/budgetsexpected', function() use ($app,&$mysqli) {
               'api' => array(
                   'version' => $apiversion,
                   'compat' => $apiversioncompat,
-                  'bev' => 'be=' . DASHNINJA_BEV . "." . $apiversion
+                  'bev' => 'be=' . GOBYTENINJA_BEV . "." . $apiversion
               )
           );
 
@@ -1205,7 +1206,7 @@ $app->get('/api/budgets/votes', function() use ($app,&$mysqli) {
   }
   else {
     $cacheserial = sha1(serialize($budgetid));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_budgets_votes_%d_%d_%s",$testnet,$onlyvalid,$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_budgets_votes_%d_%d_%s",$testnet,$onlyvalid,$cacheserial);
     $cachefnamupdate = $cachefnam.".update";
     $cachetime = filemtime($cachefnam);
     $cachevalid = (is_readable($cachefnam) && ((($cachetime+120)>=time()) || file_exists($cachefnamupdate)));
@@ -1266,7 +1267,7 @@ $app->get('/api/budgets/votes', function() use ($app,&$mysqli) {
             'api' => array(
                 'version' => $apiversion,
                 'compat' => $apiversioncompat,
-                'bev' => 'bv='.DASHNINJA_BEV.".".$apiversion
+                'bev' => 'bv='.GOBYTENINJA_BEV.".".$apiversion
             )
         );
 
@@ -1376,7 +1377,7 @@ $app->get('/api/budgetsprojection', function() use ($app,&$mysqli) {
   }
   else {
     $cacheserial = sha1(serialize($budgetids).serialize($budgethashes));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_budgetsprojection_%d_%d_%d_%d_%s",$testnet,$onlyvalid,count($budgetids),count($budgethashes),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_budgetsprojection_%d_%d_%d_%d_%s",$testnet,$onlyvalid,count($budgetids),count($budgethashes),$cacheserial);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+120)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -1474,14 +1475,14 @@ $app->get('/api/budgetsprojection', function() use ($app,&$mysqli) {
           return $response;
         }
 
-        $nSubsidy = 5;
+        $nSubsidy = 15;
         if ($testnet == 0){
-          $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 16616) + 16616;
-          for($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/14;
+          $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 17280) + 17280;
+          for($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/12;
           $estimatedbudgetamount = (($nSubsidy/100)*10)*576*30;
         } else {
           $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 50) + 50 ;
-          for($i = 46200; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/14;
+          for($i = 46200; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy/12;
           $estimatedbudgetamount = (($nSubsidy/100)*10)*50;
         }
 
@@ -1502,7 +1503,7 @@ $app->get('/api/budgetsprojection', function() use ($app,&$mysqli) {
             'api' => array(
                 'version' => $apiversion,
                 'compat' => $apiversioncompat,
-                'bev' => 'bp='.DASHNINJA_BEV.".".$apiversion
+                'bev' => 'bp='.GOBYTENINJA_BEV.".".$apiversion
             )
         );
 
@@ -1610,7 +1611,7 @@ $app->get('/api/governanceproposals', function() use ($app,&$mysqli) {
     }
     else {
         $cacheserial = sha1(serialize($proposalsnames).serialize($proposalshashes));
-        $cachefnam = CACHEFOLDER.sprintf("dashninja_governanceproposals_%d_%d_%d_%d_%s",$testnet,$onlyvalid,count($proposalsnames),count($proposalshashes),$cacheserial);
+        $cachefnam = CACHEFOLDER.sprintf("gobyteninja_governanceproposals_%d_%d_%d_%d_%s",$testnet,$onlyvalid,count($proposalsnames),count($proposalshashes),$cacheserial);
         $cachefnamupdate = $cachefnam.".update";
         $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+120)>=time()) || file_exists($cachefnamupdate)));
         if (DMN_USE_CACHE && $cachevalid) {
@@ -1663,9 +1664,9 @@ $app->get('/api/governanceproposals', function() use ($app,&$mysqli) {
             }
 
             // Calculate next superblock height
-            $nSubsidy = 5;
+            $nSubsidy = 15;
             if ($testnet == 0) {
-                $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 16616) + 16616;
+                $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 17280) + 17280;
                 for ($i = 210240; $i <= $nextsuperblock; $i += 210240) $nSubsidy -= $nSubsidy / 14;
                 $estimatedbudgetamount = (($nSubsidy / 100) * 10) * (60 * 24 * 30) / 2.6;
             } else {
@@ -1675,7 +1676,7 @@ $app->get('/api/governanceproposals', function() use ($app,&$mysqli) {
             }
 
             // Calculate next superblock timestamp
-            $nextsuperblocktimestamp = round($currentblock['BlockTime']+(($nextsuperblock-$currentblock['BlockId'])/553.85)*86400);
+            $nextsuperblocktimestamp = round($currentblock['BlockTime']+(($nextsuperblock-$currentblock['BlockId'])/576)*86400);
 
             // Get governance proposals
             $sql = sprintf("SELECT * FROM cmd_gobject_proposals WHERE GovernanceObjectTestnet = %d%s%s",$testnet,$sqlhashes,$sqlnames);
@@ -1768,7 +1769,7 @@ $app->get('/api/governanceproposals', function() use ($app,&$mysqli) {
                     'api' => array(
                         'version' => $apiversion,
                         'compat' => $apiversioncompat,
-                        'bev' => 'gp='.DASHNINJA_BEV.".".$apiversion
+                        'bev' => 'gp='.GOBYTENINJA_BEV.".".$apiversion
                     )
                 );
 
@@ -1818,7 +1819,7 @@ $app->get('/api/governanceproposals/votelimit', function() use ($app,&$mysqli) {
         }
     }
 
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_governanceproposals_votelimit_%d",$testnet);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_governanceproposals_votelimit_%d",$testnet);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+120)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -1845,7 +1846,7 @@ $app->get('/api/governanceproposals/votelimit', function() use ($app,&$mysqli) {
         }
 
         if ($testnet == 0) {
-            $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 16616) + 16616;
+            $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 17280) + 17280;
         } else {
             $nextsuperblock = $currentblock["BlockId"] - ($currentblock["BlockId"] % 50) + 50;
         }
@@ -1871,7 +1872,7 @@ $app->get('/api/governanceproposals/votelimit', function() use ($app,&$mysqli) {
 
         // Vote limit is 1662 blocks before next superblock
         $nextsuperblockid = $nextsuperblock - 1662;
-        $nextsuperblocktime = round($currentblock["BlockTime"]+((($nextsuperblock - 1662 - $currentblock["BlockId"])/553.85)*86400));
+        $nextsuperblocktime = round($currentblock["BlockTime"]+((($nextsuperblock - 1662 - $currentblock["BlockId"])/576)*86400));
         if ($nextsuperblockid <= $currentblock["BlockId"]) {
             $nextsuperblockid = 0;
             $nextsuperblocktime = 0;
@@ -1883,7 +1884,7 @@ $app->get('/api/governanceproposals/votelimit', function() use ($app,&$mysqli) {
 
         $nextsuperblock = array(
             "BlockId" => $nextsuperblock,
-            "BlockTime" => round($currentblock["BlockTime"]+((($nextsuperblock - $currentblock["BlockId"])/553.85)*86400))
+            "BlockTime" => round($currentblock["BlockTime"]+((($nextsuperblock - $currentblock["BlockId"])/576)*86400))
         );
 
         $data = array('votelimit' => array(
@@ -1898,7 +1899,7 @@ $app->get('/api/governanceproposals/votelimit', function() use ($app,&$mysqli) {
             'api' => array(
                 'version' => $apiversion,
                 'compat' => $apiversioncompat,
-                'bev' => 'gpvl=' . DASHNINJA_BEV . "." . $apiversion
+                'bev' => 'gpvl=' . GOBYTENINJA_BEV . "." . $apiversion
             )
         );
 
@@ -1987,7 +1988,7 @@ $app->get('/api/governanceproposals/votes', function() use ($app,&$mysqli) {
     }
     else {
         $cacheserial = sha1(serialize($budgetid));
-        $cachefnam = CACHEFOLDER.sprintf("dashninja_governanceproposals_votes_%d_%s",$testnet,$cacheserial);
+        $cachefnam = CACHEFOLDER.sprintf("gobyteninja_governanceproposals_votes_%d_%s",$testnet,$cacheserial);
         $cachefnamupdate = $cachefnam.".update";
         $cachetime = filemtime($cachefnam);
         $cachevalid = (is_readable($cachefnam) && ((($cachetime+120)>=time()) || file_exists($cachefnamupdate)));
@@ -2043,7 +2044,7 @@ $app->get('/api/governanceproposals/votes', function() use ($app,&$mysqli) {
                     'api' => array(
                         'version' => $apiversion,
                         'compat' => $apiversioncompat,
-                        'bev' => 'gpv='.DASHNINJA_BEV.".".$apiversion
+                        'bev' => 'gpv='.GOBYTENINJA_BEV.".".$apiversion
                     )
                 );
 
@@ -2127,7 +2128,7 @@ $app->get('/api/governancetriggers', function() use ($app,&$mysqli) {
         $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errmsg));
     }
     else {
-        $cachefnam = CACHEFOLDER.sprintf("dashninja_governancetriggers_%d_%d_%d_%d",$testnet,$onlyvalid,$onlyfuture,$afterblockheight);
+        $cachefnam = CACHEFOLDER.sprintf("gobyteninja_governancetriggers_%d_%d_%d_%d",$testnet,$onlyvalid,$onlyfuture,$afterblockheight);
         $cachefnamupdate = $cachefnam.".update";
         $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+120)>=time()) || file_exists($cachefnamupdate)));
         if (DMN_USE_CACHE && $cachevalid) {
@@ -2207,7 +2208,7 @@ $app->get('/api/governancetriggers', function() use ($app,&$mysqli) {
                     'api' => array(
                         'version' => $apiversion,
                         'compat' => $apiversioncompat,
-                        'bev' => 'gt='.DASHNINJA_BEV.".".$apiversion
+                        'bev' => 'gt='.GOBYTENINJA_BEV.".".$apiversion
                     )
                 );
 
@@ -2295,7 +2296,7 @@ $app->get('/api/nodes', function() use ($app,&$mysqli) {
 //   ips=JSON encoded list of ip:port
 //   vins=JSON encoded list of output-index
 //   protocol=latest|integer (optional, then value=latest)
-//   prev12=0|1 (optional, respond as pre v0.12 Dash Ninja API, obsolete)
+//   prev12=0|1 (optional, respond as pre v0.12 GoByte Ninja API, obsolete)
 // Each following enabled parameter will slow down the query, only activate if you really need the data :
 //   balance=0|1 (optional, add balance info)
 //   donation=0|1 (optional, add donation info, obsolete)
@@ -2347,7 +2348,7 @@ $app->get('/api/masternodes', function() use ($app,&$mysqli) {
   }
 
   if ($protocol == -1) {
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_maxprotocol_%d",$testnet);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_maxprotocol_%d",$testnet);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
       $protocol = unserialize(file_get_contents($cachefnam));
@@ -2381,8 +2382,8 @@ $app->get('/api/masternodes', function() use ($app,&$mysqli) {
     }
     else {
       foreach ($mnpubkeys as $mnpubkey) {
-        if ( ( ($testnet == 1) && ! ( (substr($mnpubkey,0,1) == 'y') || (substr($mnpubkey,0,1) == 'x') ) )
-          || ( ($testnet == 0) && ! ( (substr($mnpubkey,0,1) == 'X') || (substr($mnpubkey,0,1) == '7') ) )
+        if ( ( ($testnet == 1) && ! ( (substr($mnpubkey,0,1) == 'n') || (substr($mnpubkey,0,1) == '9') ) )
+          || ( ($testnet == 0) && ! ( (substr($mnpubkey,0,1) == 'G') || (substr($mnpubkey,0,1) == '5') ) )
           || ( strlen($mnpubkey) != 34 ) ) {
           $errmsg[] = "Parameter pubkeys: Entry $mnpubkey: Incorrect pubkey format.";
         }
@@ -3163,7 +3164,7 @@ $app->get('/api/protx', function() use ($app,&$mysqli) {
                     'fromcache' => $cachevalid),
                 'api' => array('version' => 1,
                     'compat' => 1,
-                    'bev' => 'protx='.DASHNINJA_BEV.'.0')
+                    'bev' => 'protx='.GOBYTENINJA_BEV.'.0')
             )));
 
         }
@@ -3205,7 +3206,7 @@ $app->get('/api/tablevars', function() use ($app,&$mysqli) {
     $response->setJsonContent(array('status' => 'ERROR', 'messages' => array('Payload (or CONTENT_LENGTH) is missing')));
   }
   else {
-    $cachefnam = CACHEFOLDER."dashninja_tablevars";
+    $cachefnam = CACHEFOLDER."gobyteninja_tablevars";
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+60)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -3234,7 +3235,7 @@ $app->get('/api/tablevars', function() use ($app,&$mysqli) {
             'api' => array(
                 'version' => $apiversion,
                 'compat' => $apiversioncompat,
-                'bev' => 'tv='.DASHNINJA_BEV.".".$apiversion
+                'bev' => 'tv='.GOBYTENINJA_BEV.".".$apiversion
             )
         );
 
@@ -3262,5 +3263,6 @@ $app->notFound(function () use ($app) {
 
 $request = new Phalcon\Http\Request();
 $app->handle($request->getURI());
+//$app->handle();
 
 ?>

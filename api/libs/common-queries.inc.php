@@ -1,25 +1,25 @@
 <?php
 
 /*
-This file is part of Dash Ninja.
-https://github.com/elbereth/dashninja-fe
+This file is part of GoByte Ninja.
+https://github.com/gobytecoin/gobyteninja-fe
 
-Dash Ninja is free software: you can redistribute it and/or modify
+GoByte Ninja is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Dash Ninja is distributed in the hope that it will be useful,
+GoByte Ninja is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Dash Ninja.  If not, see <http://www.gnu.org/licenses/>.
+along with GoByte Ninja.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-define("DASHNINJA_BEV","2.0");
+define("GOBYTENINJA_BEV","2.0");
 
 // Function to retrieve the masternode list
 function dmn_masternodes_get($mysqli, $testnet = 0, $protocol = 0, $mnpubkeys = array(), $mnips = array(), $withlastpaid = false) {
@@ -33,7 +33,7 @@ function dmn_masternodes_get($mysqli, $testnet = 0, $protocol = 0, $mnpubkeys = 
         $lastpaidnum = 0;
     }
     $cacheserial = sha1(serialize($mnpubkeys).serialize($mnips));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_get_%d_%d_%d_%d_%d_%s",$testnet,$protocol,count($mnpubkeys),count($mnips),$lastpaidnum,$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_get_%d_%d_%d_%d_%d_%s",$testnet,$protocol,count($mnpubkeys),count($mnips),$lastpaidnum,$cacheserial);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
         $nodes = unserialize(file_get_contents($cachefnam));
@@ -197,7 +197,7 @@ function dmn_masternodes2_get($mysqli, $testnet = 0, $protocol = 0, $mnpubkeys =
     $sqltestnet = sprintf("%d",$testnet);
 
     $cacheserial = sha1(serialize($mnpubkeys).serialize($mnips).serialize($mnvins));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes2_get_%d_%d_%d_%d_%d_%s",$testnet,$protocol,count($mnpubkeys),count($mnips),count($mnvins),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes2_get_%d_%d_%d_%d_%d_%s",$testnet,$protocol,count($mnpubkeys),count($mnips),count($mnvins),$cacheserial);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = (is_readable($cachefnam) && (((filemtime($cachefnam)+300)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -348,7 +348,7 @@ function dmn_protx_get($mysqli, $testnet = 0, $protxhashes= array(), $protxips= 
     $sqltestnet = sprintf("%d",$testnet);
     $bypasscache = true;
     $cacheserial = sha1(serialize($protxhashes).serialize($protxips).serialize($collaterals));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_protx_get_%d_%d_%d_%d_%s",$testnet,count($protxhashes),count($protxips),count($collaterals),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_protx_get_%d_%d_%d_%d_%s",$testnet,count($protxhashes),count($protxips),count($collaterals),$cacheserial);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = false && (!$bypasscache) && (is_readable($cachefnam) && (((filemtime($cachefnam)+300)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -523,7 +523,7 @@ EOT;
 function dmn_masternodes_votes_get($mysqli, $mnips = array(), $testnet) {
 
     $cacheserial = sha1(serialize($mnips));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_votes_get_%d_%d_%s",$testnet,count($mnips),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_votes_get_%d_%d_%s",$testnet,count($mnips),$cacheserial);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
         $nodes = unserialize(file_get_contents($cachefnam));
@@ -613,8 +613,8 @@ function dmn_masternodes_votes_get($mysqli, $mnips = array(), $testnet) {
 function dmn_masternodes_portcheck_get($mysqli, $mnkeys, $testnet = 0, $bypasscache = false) {
 
 //    $cacheserial = sha1(serialize($mnkeys));
-//    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_portcheck_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_portcheck_get_%d",$testnet);
+//    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_portcheck_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_portcheck_get_%d",$testnet);
     $cachefnamupdate = $cachefnam.".update";
     $cachevalid = $bypasscache && (is_readable($cachefnam) && (((filemtime($cachefnam)+300)>=time()) || file_exists($cachefnamupdate)));
     if (DMN_USE_CACHE && $cachevalid) {
@@ -670,7 +670,7 @@ function dmn_masternodes_portcheck_get($mysqli, $mnkeys, $testnet = 0, $bypassca
 function dmn_masternodes_donation_get($mysqli, $mnkeys, $testnet = 0) {
 
     $cacheserial = sha1(serialize($mnkeys));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_donation_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_donation_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
         $donation = unserialize(file_get_contents($cachefnam));
@@ -716,7 +716,7 @@ function dmn_masternodes_donation_get($mysqli, $mnkeys, $testnet = 0) {
 
 function dmn_masternodes_donations_get($mysqli, $testnet = 0) {
 
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_donations_get_%d",$testnet);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_donations_get_%d",$testnet);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
         $donation = unserialize(file_get_contents($cachefnam));
@@ -758,7 +758,7 @@ function dmn_masternodes_balance_get($mysqli, $mnkeys, $testnet = 0, $bypasscach
         $mnkeys = array();
     }
     $cacheserial = sha1(serialize($mnkeys));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_balance_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_balance_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
     $cachevalid = !$bypasscache && (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
         $balances = unserialize(file_get_contents($cachefnam));
@@ -803,7 +803,7 @@ function dmn_masternodes_balance_get($mysqli, $mnkeys, $testnet = 0, $bypasscach
 function dmn_masternodes_exstatus_get($mysqli, $mnkeys, $testnet = 0) {
 
     $cacheserial = sha1(serialize($mnkeys));
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_masternodes_exstatus_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_masternodes_exstatus_get_%d_%d_%s",$testnet,count($mnkeys),$cacheserial);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+120)>=time()));
     if (DMN_USE_CACHE && $cachevalid) {
         $exstatus = unserialize(file_get_contents($cachefnam));
@@ -851,7 +851,7 @@ function dmn_masternodes_exstatus_get($mysqli, $mnkeys, $testnet = 0) {
 // Function to retrieve the masternode count
 function dmn_masternodes_count($mysqli, $testnet, &$totalmncount, &$uniquemnips) {
 
-    $cachefnam = CACHEFOLDER.sprintf("dashninja_protocols_%d",$testnet);
+    $cachefnam = CACHEFOLDER.sprintf("gobyteninja_protocols_%d",$testnet);
     $cachevalid = (is_readable($cachefnam) && ((filemtime($cachefnam)+300)>=time()));
     $protocols = array();
     if (DMN_USE_CACHE && $cachevalid) {
