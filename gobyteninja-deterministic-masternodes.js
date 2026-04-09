@@ -26,13 +26,13 @@ var tableLocalNodes = null;
 var tableBlockConsensus = null;
 var tableMNList = null;
 var chartMNVersions = null;
-var gobyteversiondefault = "0.16.2.1";
+var gobyteversiondefault = "0.16.2.2";
 var gobyteversion = gobyteversiondefault;
 var gobyteversioncheck = gobyteversion;
 var gobyteversionsemaphore = false;
-var sentinelversiondefault = "1.5.0";
+var sentinelversiondefault = "1.6.0";
 var sentinelversion = sentinelversiondefault;
-var gobytemaxprotocol = 0;
+var gobytemaxprotocol = 70211;
 
 $.fn.dataTable.ext.errMode = 'throw';
 
@@ -796,14 +796,14 @@ $(document).ready(function() {
             if ( versioninfo == "Unknown" ) {
                 color = 'active';
             }
-            else if ( ( versioninfo.substring(0,8) == "0.12.2.1" ) || ( versioninfo.substring(0,8) == "0.12.2.4" ) ) {
+            else if ( versioninfo < "0.16.2.1" ) {
                 color = 'danger';
             }
             else if ( versioninfo == gobyteversioncheck ) {
                 color = 'success';
             }
             else {
-                color = 'danger';
+                color = 'warning';
             }
             $('td',row).eq(7).removeClass("danger").removeClass("success").removeClass("warning").removeClass("active").addClass(color);
             if ( data.state.PoSePenalty != 0 ) {
