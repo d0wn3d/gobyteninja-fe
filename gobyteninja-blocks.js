@@ -459,7 +459,8 @@ $(document).ready(function(){
             $('td',row).eq(8).css({"background-color": "#FF8F8F"});
           }
           else {
-            if (Math.round(data.BlockMNValueRatio*1000) == Math.round(data.BlockMNValueRatioExpected*1000)) {
+            var ratioDiff = Math.abs(data.BlockMNValueRatio - data.BlockMNValueRatioExpected);
+            if (ratioDiff < 0.0001) {
               $('td',row).eq(5).css({"background-color": "#8FFF8F"});
               $('td',row).eq(6).css({"background-color": "#8FFF8F"});
             }
